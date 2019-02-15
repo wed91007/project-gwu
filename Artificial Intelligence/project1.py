@@ -1,7 +1,5 @@
 import numpy as np
-
-
-
+import heapq
 edges=list()
 vertices=list()
 count=0
@@ -46,7 +44,7 @@ def readfile(filepath):
 def adjacencyMat(vertices,edges):
     global count
     global countE
-    admat = np.zeros((count,count),dtype=np.int)
+    admat = np.full((count,count),1000000)
     for i in range(0,countE):
         x=int(edges[i][0])
         y=int(edges[i][1])
@@ -54,7 +52,7 @@ def adjacencyMat(vertices,edges):
         admat[y][x]=admat[x][y] = cost
     return admat
         
-        
+#convert str list into numpy array in int        
 def regular(vertices,edges):    
     global count
     global countE
@@ -72,22 +70,56 @@ def regular(vertices,edges):
             e[i][j]=b[j]
     return v,e
 
+#implementing dijkstra
+def dijkstra(src,dst):
+    global count
+    global vertices
+    global edges
+    ver,edg=regular(vertices,edges)
+    admat = adjacencyMat(ver,edg)
+    
+    q=[admat[src][i] for i in range(0,count)]
 
-        
+#    q = np.array(admat[src])
+#
+    print type(q)
+#    seen = set()
+#    cost = q.min()
+#    v1 = np.where(cost)
+#    print cost
+#    print type(v1)
+#    while q:
+    cost = heapq.heappop(q)
+    print type(cost)
+    v1 =  list.index(cost)
+    print v1
+#        if v1 not in seen:
+#			seen.add(v1)
+#			path = (v1, path)
+#			if v1 == dst:
+#				return cost,path
+#			for c, v2 in g.get(v1, ()):
+#				if v2 not in seen:
+#					heapq.heappush(q, (cost+c, v2, path))
+#	return float("inf"),[]
+
+
+    
 #__main__function      
 if __name__ == '__main__':
 #    filepath = raw_input("Please input the path of graph:")
     readfile('F:/Python/ai/data/graphs/graph100_520.txt')
-    print 'vertices is:',vertices
-    print 'edges is:',edges
+#    print 'vertices is:',vertices
+#    print 'edges is:',edges
     count = len(vertices)
     countE = len(edges)
-    print count,countE
-#    print len(vertices)
-#    print len(edges)
-#    print edges[0][1],vertices[0][2]
-    ver,edg=regular(vertices,edges)
-    print ver
-    print edg
-    admat=adjacencyMat(ver,edg)
-    print admat
+#    print count,countE
+##    print len(vertices)
+##    print len(edges)
+##    print edges[0][1],vertices[0][2]
+#    ver,edg=regular(vertices,edges)
+#    print ver
+#    print edg
+#    admat=adjacencyMat(ver,edg)
+#    print admat
+    dijkstra(1,2)
