@@ -44,7 +44,7 @@ def readfile(filepath):
 def adjacencyMat(vertices,edges):
     global count
     global countE
-    admat = np.full((count,count),1000000)
+    admat = np.full((count,count),np.inf)
     for i in range(0,countE):
         x=int(edges[i][0])
         y=int(edges[i][1])
@@ -78,21 +78,39 @@ def dijkstra(src,dst):
     ver,edg=regular(vertices,edges)
     admat = adjacencyMat(ver,edg)
     
-    q=[admat[src][i] for i in range(0,count)]
+    #q=[admat[src][i] for i in range(0,count)]
 
-#    q = np.array(admat[src])
-#
-    print type(q)
-#    seen = set()
-#    cost = q.min()
+    q = np.array(admat[src])
+    seen = set()
+    cost=0
+#    print type(q)
+    
 #    v1 = np.where(cost)
 #    print cost
 #    print type(v1)
 #    while q:
-    cost = heapq.heappop(q)
-    print type(cost)
-    v1 =  list.index(cost)
-    print v1
+#    cost = heapq.heappop(q)
+#    print type(cost)
+
+    while q: 
+        
+        cost = q.min()
+        v1 =  int(np.argwhere(q==cost))
+        q[v1]=np.inf
+        if v1 not in seen:
+            seen.add(v1)
+            path = (v1,path)
+            if v1 == dst:return(cost,path)
+
+            for v2 in range(0,count):
+                if admat[v1][v2] != np.inf:
+                    if v2 in seen:continue
+                    prev = np.array(admat[v2]).min()
+                    next = cost + admat[v1][v2]
+                    if prev is inf or next < prev:
+
+    return np.inf   
+
 #        if v1 not in seen:
 #			seen.add(v1)
 #			path = (v1, path)
@@ -108,7 +126,7 @@ def dijkstra(src,dst):
 #__main__function      
 if __name__ == '__main__':
 #    filepath = raw_input("Please input the path of graph:")
-    readfile('F:/Python/ai/data/graphs/graph100_520.txt')
+    readfile('/Users/hanxiangyang/git/project-gwu/Artificial Intelligence/graph100_520.txt')
 #    print 'vertices is:',vertices
 #    print 'edges is:',edges
     count = len(vertices)
@@ -122,4 +140,5 @@ if __name__ == '__main__':
 #    print edg
 #    admat=adjacencyMat(ver,edg)
 #    print admat
-    dijkstra(1,2)
+    dijkstra(0,2)
+    print np.inf
