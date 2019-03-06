@@ -63,8 +63,38 @@ Github url:&\url{https://github.com/wed91007/project-gwu}
 \section{Parameter Estimation}
 
 \subsection{Problem 1}
-\subsection{Problem 2}
+Poisson distribution has pmf as: \\
+\begin{displaymath}
+P(X|\lambda)=\frac{{\lambda^X}{e^{-\lambda}}}{X!}
+\end{displaymath}
+MLE for Poisson distribution is getting $\lambda$ for $\max P(X|\lambda)$ with knowing X.\\
+Since the logarithm function is monotonically increasing, we can use log to compute MLE:\\
+\begin{align*}
+L(\lambda)&=\log{\prod_{i=1}^n}f(X_i|\lambda)\\
+			&=\sum_{i=1}^n \log(\frac{\lambda^X e^{-\lambda}}{X!})\\
+			&=-n\lambda + (\sum_{i=1}^n X_i)\log(\lambda)-\log(\sum_{i=1}^n X!)
+\end{align*}\\
 
+When derivative of $L(\lambda)=0$, it is the max:\\
+\begin{displaymath}	
+\frac{d}{d\lambda}L(\lambda)=0 \Leftrightarrow -n+(\sum_{i=1}^n X_i)\frac{1}{\lambda}
+\end{displaymath}
+Solving the equation:\\
+\begin{displaymath}
+\lambda_{MLE}=\hat{\lambda}=\frac{1}{n}\sum_{i=1}^n X_i
+\end{displaymath}
+
+
+
+ 
+
+
+
+\subsection{Problem 2}
+Gamma distribution has pdf:\\
+\begin{displaymath}
+p(\lambda|\alpha,)
+\end{displaymath}
 
 
 
@@ -73,8 +103,29 @@ Github url:&\url{https://github.com/wed91007/project-gwu}
 %----------------------------------------------------------------------------------------
 
 \section{Decision Trees}
+\subsection{H(Y)}
+The total count is $3+4+4+1+0+1+3+5=21$. \\
+$P(Y=+)=\frac{12}{21}=0.57$,$P(Y=-)=\frac{9}{21}=0.43$.\\
+Entropy for Y is:\\
+\begin{align*}
+H(Y)&=-\sum P(Y)\log_2 P(Y)\\
+	 &=-P(Y=+)\log_2 P(Y=+)-P(Y=-)\log_2 P(Y=-)\\
+	 &=-0.57*-0.81-0.43*-1.2\\
+	 &=0.98
+\end{align*}
 
-
+\subsection{Information gain}
+In the training data: $P(X_1=T)=\frac{8}{21}=0.38$,$P(X_1=F)=\frac{13}{21}=0.62$.\\
+Computing the information gain $IG(X_1)$:\\
+\begin{align*}
+IG(X_1)&=H(Y)-H(Y|X_1)\\
+		&=H(Y)-P(X_1=T)H(Y|X_1=T)-P(X_2=F)H(Y|X_1=F)\\
+		&=0.98-0.38({\frac{7}{8}\log_2 \frac{7}{8}}-{\frac{1}{8}\log_2 \frac{1}{8}})-0.62({\frac{5}{13}\log_2 \frac{5}{13}}-{\frac{8}{13}\log_2 \frac{8}{13}})\\
+		&=0.98-0.38(0.17+0.38)-0.62(0.43+0.53)\\
+		&=0.98-0.21-0.60
+		&=0.17
+\end{align*}
+For $X_2$: $P(X_2=T)=\frac{}{21}$
 
 
 %----------------------------------------------------------------------------------------
@@ -92,6 +143,8 @@ Github url:&\url{https://github.com/wed91007/project-gwu}
 
 \section{Support Vector Machine}
 \subsection{Dataset Details}
+This project uses Breast Cancer Wisconsin (Diagnostic) Data Set. Features are computed from a digitized image of a fine needle aspirate (FNA) of a breast mass. They describe characteristics of the cell nuclei present in the image. 
+The attributes contains ID, Diagnosis(malignant or benign) and ten real-valued features for each cell nucleus.
 \subsection{Algorithm Description}
 \subsection{Algorithm Results}
 \subsection{Runtime}
