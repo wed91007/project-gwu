@@ -93,7 +93,7 @@ Solving the equation:\\
 \subsection{Problem 2}
 Gamma distribution has pdf:\\
 \begin{displaymath}
-p(\lambda|\alpha,)
+p(\lambda|\alpha,\beta)
 \end{displaymath}
 
 
@@ -119,13 +119,24 @@ In the training data: $P(X_1=T)=\frac{8}{21}=0.38$,$P(X_1=F)=\frac{13}{21}=0.62$
 Computing the information gain $IG(X_1)$:\\
 \begin{align*}
 IG(X_1)&=H(Y)-H(Y|X_1)\\
-		&=H(Y)-P(X_1=T)H(Y|X_1=T)-P(X_2=F)H(Y|X_1=F)\\
-		&=0.98-0.38({\frac{7}{8}\log_2 \frac{7}{8}}-{\frac{1}{8}\log_2 \frac{1}{8}})-0.62({\frac{5}{13}\log_2 \frac{5}{13}}-{\frac{8}{13}\log_2 \frac{8}{13}})\\
+		&=H(Y)-(P(X_1=T)H(Y|X_1=T)+P(X_1=F)H(Y|X_1=F))\\
+		&=0.98-0.38({-\frac{7}{8}\log_2 \frac{7}{8}}-{\frac{1}{8}\log_2 \frac{1}{8}})-0.62({-\frac{5}{13}\log_2 \frac{5}{13}}-{\frac{8}{13}\log_2 \frac{8}{13}})\\
 		&=0.98-0.38(0.17+0.38)-0.62(0.43+0.53)\\
-		&=0.98-0.21-0.60
+		&=0.98-0.21-0.60\\
 		&=0.17
+\end{align*}\\
+For $X_2$: $P(X_2=T)=\frac{10}{21}=0.48$; $P(X_2=F)=\frac{11}{21}=0.52$.\\
+\begin{align*}
+IG(X_2)&=H(Y)-H(Y|X_2)\\
+		&=H(Y)-(P(X_2=T)H(Y|X_2=T)+P(X_2=F)H(Y|X_2=F))\\
+		&=0.98-0.48({-\frac{7}{10}\log_2 \frac{7}{10}}-{-\frac{3}{10}\log_2 \frac{3}{10}})-0.52({\frac{5}{11}\log_2 \frac{5}{11}}-{\frac{6}{11}\log_2 \frac{6}{11}})\\
+		&=0.98-0.48(0.36+0.52)-0.52(0.52+0.47)\\
+		&=0.98-0.42-0.51\\
+		&=0.05
 \end{align*}
-For $X_2$: $P(X_2=T)=\frac{}{21}$
+
+\subsection{Decision Tree}
+Knowing 
 
 
 %----------------------------------------------------------------------------------------
@@ -134,9 +145,49 @@ For $X_2$: $P(X_2=T)=\frac{}{21}$
 
 \section{Perceptron}
 \subsection{OR Function}
+The truth table for OR function is:\\
+\\
+\begin{tabular}{|c|c|c|}
+\hline
+a&b&OR\\
+\hline
+0&0&0\\
+0&1&1\\
+1&0&1\\
+1&1&1\\
+\hline
+\end{tabular}\\
+\\
+In the Perceptron, $Prediction (\dot y) = 1$ if $$Wx+b >= 0$$ and 0 if $$Wx+b<0.$$
+For OR function, y=0 only if a=0 and b=0.\\
+Assume the function is $y=w_1 x_1+w_2 x_2+b$.\\
+Initialize $w_1=1$,$w_2=1$ and $b=-1$.\\
+1.$y=x_1 *1+x_2 *1-1$.Passing the first line (a=0,b=0,out=0):$$0+0-1=-1<0,\dot y =0;Correct.$$
+2.$y=x_1 *1+x_2 *1-1$.Passing the second line (a=0,b=1,out=1):$$0+1-1=0,\dot y =1;Correct.$$ 
+3.$y=x_1 *1+x_2 *1-1$.Passing the third line (a=1,b=0,out=1):$$1+0-1=0,\dot y =1;Correct.$$ 
+4.$y=x_1 *1+x_2 *1-1$.Passing the fourth line (a=1,b=1,out=1):$$1+1-1=1,\dot y =1;Correct.$$ 
+This shows the perceptron fit OR function well with set of inequalities.
+
+
 \subsection{XOR Function}
-
-
+The truth table for XOR function is:\\
+\\
+\begin{tabular}{|c|c|c|}
+\hline
+a&b&XOR\\
+\hline
+0&0&0\\
+0&1&1\\
+1&0&1\\
+1&1&0\\
+\hline
+\end{tabular}\\
+\\
+Prove by contradiction:\\
+Assume the perceptron could fit XOR function. \\Perceptron is fitting function:$y=Wx+b$, thus it is a linear classifier.\\
+So the two category (0,1) should be divided by a line.\\
+By observing the truth table, there are at least two lines to seperate 0 and 1 in a plane.\\
+That shows the perceptron can't fit XOR function.
 %----------------------------------------------------------------------------------------
 %	SECTION 5 Question 4
 %----------------------------------------------------------------------------------------
