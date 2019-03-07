@@ -82,7 +82,15 @@ When derivative of $L(\lambda)=0$, it is the max:\\
 Solving the equation:\\
 \begin{displaymath}
 \lambda_{MLE}=\hat{\lambda}=\frac{1}{n}\sum_{i=1}^n X_i
-\end{displaymath}
+\end{displaymath}\\
+
+To show the result is unbiased:\\
+\begin{align*}
+E[\hat \lambda]-\lambda&=E[\frac{1}{n}\sum_{i=1}^n X_i]-\lambda\\
+							&=\frac{1}{n}\sum_{i=1}^n E[X_i]-\lambda\\
+							&=\frac{1}{n}\sum_{i=1}^n \lambda-\lambda\\
+							&=0
+\end{align*}
 
 
 
@@ -91,11 +99,23 @@ Solving the equation:\\
 
 
 \subsection{Problem 2}
-Gamma distribution has pdf:\\
+Gamma distribution has pdf:
 \begin{displaymath}
-p(\lambda|\alpha,\beta)
+p(\lambda|\alpha,\beta)=\frac{\beta^{\alpha}}{\tau(\alpha)}\lambda^{\alpha-1}e^{-\beta \lambda},\lambda>0
 \end{displaymath}
-
+For Gamma distribution, the P could be:
+\begin{displaymath}
+P(\lambda|\sum_{i=1}^{n} X_i+\alpha,n+\beta)=\frac{(n+\beta)^{(\sum_{i=1}^{n}X_i+\alpha)}}{\tau(\sum_{i=1}^{n}X_i+\alpha)}\lambda^{\sum_{i=1}^{n}X_i+\alpha-1}e^{-(n+\beta) \lambda}
+\end{displaymath}
+Using logarithm:
+\begin{displaymath}
+\log P(\lambda|\alpha,\beta)=(\sum_{i=1}^{n} X_i+\alpha)\log P(n+\beta)-\log P(\sum_{i=1}^{n} X_i+\alpha)+(\sum_{i=1}^{n} X_i+\alpha-1)\log \lambda-(n+\beta)\lambda
+\end{displaymath}
+Finally, get the derivative=0 of the log function:
+\begin{align*}
+(\sum_{i=1}^{n} X_i+\alpha-1)-(n+\beta)=0\\
+\lambda_{MAP}=\frac{\sum_{i=1}^{n} X_i+\alpha-1}{n+\beta}
+\end{align*}
 
 
 %----------------------------------------------------------------------------------------
@@ -106,7 +126,7 @@ p(\lambda|\alpha,\beta)
 \subsection{H(Y)}
 The total count is $3+4+4+1+0+1+3+5=21$. \\
 $P(Y=+)=\frac{12}{21}=0.57$,$P(Y=-)=\frac{9}{21}=0.43$.\\
-Entropy for Y is:\\
+Entropy for Y is:
 \begin{align*}
 H(Y)&=-\sum P(Y)\log_2 P(Y)\\
 	 &=-P(Y=+)\log_2 P(Y=+)-P(Y=-)\log_2 P(Y=-)\\
@@ -116,7 +136,7 @@ H(Y)&=-\sum P(Y)\log_2 P(Y)\\
 
 \subsection{Information gain}
 In the training data: $P(X_1=T)=\frac{8}{21}=0.38$,$P(X_1=F)=\frac{13}{21}=0.62$.\\
-Computing the information gain $IG(X_1)$:\\
+Computing the information gain $IG(X_1)$:
 \begin{align*}
 IG(X_1)&=H(Y)-H(Y|X_1)\\
 		&=H(Y)-(P(X_1=T)H(Y|X_1=T)+P(X_1=F)H(Y|X_1=F))\\
@@ -136,7 +156,12 @@ IG(X_2)&=H(Y)-H(Y|X_2)\\
 \end{align*}
 
 \subsection{Decision Tree}
-Knowing 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=01]{id3.jpg}
+\caption{ID3 Tree}
+\label{fig3.2.1}
+\end{figure}
 
 
 %----------------------------------------------------------------------------------------
@@ -194,15 +219,41 @@ That shows the perceptron can't fit XOR function.
 
 \section{Support Vector Machine}
 \subsection{Dataset Details}
-This project uses Breast Cancer Wisconsin (Diagnostic) Data Set. Features are computed from a digitized image of a fine needle aspirate (FNA) of a breast mass. They describe characteristics of the cell nuclei present in the image. 
-The attributes contains ID, Diagnosis(malignant or benign) and ten real-valued features for each cell nucleus.
+This project uses Breast Cancer Wisconsin (Diagnostic) Data Set. Features are computed from a digitized image of a fine needle aspirate (FNA) of a breast mass. They describe characteristics of the cell nuclei present in the image.\\
+The attributes contains ID, Diagnosis(malignant or benign) and ten real-valued features for each cell nucleus.\\
+Here we use wdbc.data as our training set.
+
 \subsection{Algorithm Description}
+In machine learning, support-vector machines (SVM) are supervised learning models with associated learning algorithms that analyze data used for classification and regression analysis.\\
+In this project, some data preprocessing should be done:
+\begin{itemize}
+\item Transform data file to csv;
+\item Insert header to the csv based on the dataset description;
+\item Split dataset into train(0.67) and test(0.33) data;
+\end{itemize}
+The data could be visualized:
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.6]{breastvisual.png}
+\caption{Visualization for Breast Cancer}
+\label{fig5.2.1}
+\end{figure}
+
 \subsection{Algorithm Results}
+Running the algorithm on Python2.7.\\
+Using linear kernel, the final score for SVM is 0.98425196850393704.\\
+The confusion matrix is:\\
+\begin{tabular}{lr}
+119&2\\
+2&65
+\end{tabular}\\
+Normalizing the confusion matrix:\\
+\begin{tabular}{lr}
+0.98&0.02\\
+0.03&0.97
+\end{tabular}\\
 \subsection{Runtime}
-
-
-
-
+The SVM's time complexity for linear kernel is O(nd),n is number of training samples, d is number of feature dimensions.
 
 
 
