@@ -1,0 +1,219 @@
+\documentclass{article}
+
+\usepackage{graphicx} % Required for the inclusion of images
+%\usepackage{natbib} % Required to change bibliography style to APA
+\usepackage{amsmath} % Required for some math elements 
+\usepackage{float}
+\usepackage{url}
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\labelenumi}{\alph{enumi}.} % Make numbering in the enumerate environment by letter rather than number (e.g. section 6)
+
+%\usepackage{times} % Uncomment to use the Times New Roman font
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Project 3 Report \\ MNIST} % Title
+
+\author{Xiangyang \textsc{Han}} % Author name
+
+\date{\today} % Date for the report
+
+\begin{document}
+
+\maketitle % Insert the title, author and date
+
+
+% If you wish to include an abstract, uncomment the lines below
+% \begin{abstract}
+% Abstract text
+% \end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+\section{Project Overview}
+
+
+\begin{tabular}{ll}
+Name:&Xiangyang Han\\
+Student ID:&G29562597\\
+Major Resource:&ide:Spyder; Reference:wiki,stackoverflow\\
+Programming Language:&python 2.7\\
+Github url:&\url{https://github.com/wed91007/project-gwu}
+\end{tabular}
+
+
+% If you have more than one objective, uncomment the below:
+%\begin{description}
+%\item[First Objective] \hfill \\
+%Objective 1 text
+%\item[Second Objective] \hfill \\
+%Objective 2 text
+%\end{description}
+
+
+ 
+%----------------------------------------------------------------------------------------
+%	SECTION 2
+%----------------------------------------------------------------------------------------
+
+\section{Data Details}
+
+\subsection{MNIST Dataset}
+\subsubsection{Overview}
+
+The MNIST database (Modified National Institute of Standards and Technology database) is a large database of handwritten digits that is commonly used for training various image processing systems. The dataset is divided into train set and test set. The first column of each dataset is the label indicating the number is from 0 to 9.\\
+In the project, the train.csv is used. It is separated into train set(75\%) and test set(25\%). Besides, 10\% of the train set are used as validation set.
+
+\subsubsection{Visualization}
+The data in MNIST are numbers representing gray degree for each pixel in an image labeled 0 to 9.\\
+The original data is a 1-dimension array. By reshape the data into a 28*28 gray image, the handwritten digits are shown.\\
+\begin{figure}[H]
+\centering
+
+\includegraphics[scale=0.2]{mnistvisual.png}
+\caption{Visualization of MNIST}
+\label{fig2.1}
+
+\end{figure}
+
+
+%----------------------------------------------------------------------------------------
+%	SECTION 3
+%----------------------------------------------------------------------------------------
+
+\section{Algorithm Description}
+\subsection{Random Forest}
+Random forests or random decision forests are an ensemble learning method for classification, regression and other tasks that operates by constructing a multitude of decision trees at training time and outputting the class that is the mode of the classes (classification) or mean prediction (regression) of the individual trees. Random decision forests correct for decision trees' habit of overfitting to their training set.
+
+
+
+\subsection{KNN}
+
+In pattern recognition, the k-nearest neighbors algorithm (k-NN) is a non-parametric method used for classification and regression. In both cases, the input consists of the k closest training examples in the feature space. The output depends on whether k-NN is used for classification or regression:\\
+
+\begin{itemize}
+\item In k-NN classification, the output is a class membership. An object is classified by a plurality vote of its neighbors, with the object being assigned to the class most common among its k nearest neighbors (k is a positive integer, typically small). If k = 1, then the object is simply assigned to the class of that single nearest neighbor.\\
+\item In k-NN regression, the output is the property value for the object. This value is the average of the values of its k nearest neighbors.\\
+\end{itemize}
+
+\subsection{Data Preprocessing}
+\subsubsection{Pima}
+In the diabetes dataset, the feature Glucose,BloodPresseure,SkinThickness,BMI and Insulin don't take value zero since it means nothing. Thus zeros in those columns are replaced by NaN in nparray. \\
+\\
+The Pima dataset can then be preprocessed as follow:
+\begin{itemize} 
+\item No preprocessing.
+\item The data are preprocessed by standard scaler in sklearn to extract the features.
+\end{itemize}
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	SECTION 4
+%----------------------------------------------------------------------------------------
+
+\section{Algorithm Results}
+\subsection{Random Forest Result}
+Taking 1000 data points to train, we check the performance for different numbers of estimators in random forest classifier.\\
+From the figure, the performance achieved best at estimator around 100.\\
+
+
+Then we implement PCA on MNIST dataset.\\
+
+
+
+
+
+\subsection{KNN Result}
+The dataset is divided into 3 parts:
+\begin{itemize}
+\item training data points: 28350
+\item validation data points: 3150
+\item testing data points: 10500
+\end{itemize}
+
+For k from 1 to 30, take step 2, the result is:\\
+\begin{tabular}{lr}
+k=1, &accuracy=96.29\%\\
+k=3, &accuracy=95.87\%\\
+k=5, &accuracy=95.75\%\\
+k=7, &accuracy=95.78\%\\
+k=9, &accuracy=95.46\%\\
+k=11,&accuracy=95.52\%\\
+k=13, &accuracy=95.24\%\\
+k=15, &accuracy=95.08\%\\
+k=17, &accuracy=94.83\%\\
+k=19, &accuracy=94.51\%\\
+k=21, &accuracy=94.41\%\\
+k=23, &accuracy=94.38\%\\
+k=25, &accuracy=94.25\%\\
+k=27, &accuracy=94.10\%\\
+k=29, &accuracy=93.81\%
+\end{tabular}\\
+k=1 achieved highest accuracy of 96.29\% on validation data.\\
+
+The confusion matrix is:
+\begin{figure}[ht]
+\centering
+
+\includegraphics[scale=0.8]{mnistconmat.png}
+\caption{Confusion matrix of MNIST}
+\label{fig4.2.1}
+
+\end{figure}
+Using the trained model, the handwritten digit recognition samples are shown:\\
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{mnistsample.png}
+\caption{Recognition sample of MNIST}
+\label{fig4.2.2}
+
+\end{figure}
+Giving the result from original data and standard scaler data.\\
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.4]{mnistresult.png}
+\caption{result of MNIST}
+\label{fig4.2.3}
+
+\end{figure}
+Comparing to standard scaler and original dataset, binarized data and the original data shares almost the same accuracy and training time, while standard scaler performs bad on MNIST.
+%----------------------------------------------------------------------------------------
+%	SECTION 5
+%----------------------------------------------------------------------------------------
+
+\section{Runtime}
+\subsection{Pima runtime}
+The time used in Pima is trivial.
+\subsection{MINIST runtime}
+The total time for all k used: 2159.70784268s which is approximately 36m.
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	SECTION 6
+%----------------------------------------------------------------------------------------
+
+%\section{Answers to Definitions}
+
+
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+%\bibliographystyle{apalike}
+
+%\bibliography{}
+
+%----------------------------------------------------------------------------------------
+
+
+\end{document}
