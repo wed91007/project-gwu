@@ -1,0 +1,206 @@
+\documentclass{article}
+
+\usepackage{graphicx} % Required for the inclusion of images
+%\usepackage{natbib} % Required to change bibliography style to APA
+\usepackage{amsmath} % Required for some math elements 
+\usepackage{float}
+\usepackage{url}
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+\renewcommand{\labelenumi}{\alph{enumi}.} % Make numbering in the enumerate environment by letter rather than number (e.g. section 6)
+
+%\usepackage{times} % Uncomment to use the Times New Roman font
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT INFORMATION
+%----------------------------------------------------------------------------------------
+
+\title{Project 3 Report \\ K-Means} % Title
+
+\author{Xiangyang \textsc{Han}} % Author name
+
+\date{\today} % Date for the report
+
+\begin{document}
+
+\maketitle % Insert the title, author and date
+
+
+% If you wish to include an abstract, uncomment the lines below
+% \begin{abstract}
+% Abstract text
+% \end{abstract}
+
+%----------------------------------------------------------------------------------------
+%	SECTION 1
+%----------------------------------------------------------------------------------------
+\section{Project Overview}
+
+
+\begin{tabular}{ll}
+Name:&Xiangyang Han\\
+Student ID:&G29562597\\
+Major Resource:&ide:Spyder; Reference:wiki,stackoverflow\\
+Programming Language:&python 2.7\\
+Github url:&\url{https://github.com/wed91007/project-gwu}
+\end{tabular}
+
+
+% If you have more than one objective, uncomment the below:
+%\begin{description}
+%\item[First Objective] \hfill \\
+%Objective 1 text
+%\item[Second Objective] \hfill \\
+%Objective 2 text
+%\end{description}
+
+
+ 
+%----------------------------------------------------------------------------------------
+%	SECTION 2
+%----------------------------------------------------------------------------------------
+
+\section{Data Details}
+
+\subsection{Human Activity Recognition}
+\subsubsection{Overview}
+Human Activity Recognition database built from the recordings of 30 subjects performing activities of daily living (ADL) while carrying a waist-mounted smartphone with embedded inertial sensors.\\
+The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING\_UPSTAIRS, WALKING\_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70$\%$ of the volunteers was selected for generating the training data and 30$\%$ the test data.
+
+
+
+%----------------------------------------------------------------------------------------
+%	SECTION 3
+%----------------------------------------------------------------------------------------
+
+\section{Algorithm Description}
+\subsection{K-Means}
+k-means clustering is a method of vector quantization, originally from signal processing, that is popular for cluster analysis in data mining. k-means clustering aims to partition n observations into k clusters in which each observation belongs to the cluster with the nearest mean, serving as a prototype of the cluster. This results in a partitioning of the data space into Voronoi cells.\\
+Given a set of observations $(x_1,x_2,\dots,x_n)$, where each observation is a d-dimentional real vector, k-means clustering aims to partition the n observations into k($\leq n$) sets $S=\{S_1,S_2,\dots,S_k\}$ so as to minimize the within-cluster sum of squares(WCSS)(i.e. variance).Formally, the objective is to find:
+$$arg\min\limits_S \sum_{i=1}^k \sum_{i\in S_i} {||x-\mu_i||}^2=arg\min\limits_S \sum_{i=1}^k |S_i|Var S_i$$
+Where $\mu_i$ is the mean of points in $S_i$. This is equivalent to minimizing the pairwise squared deviation of points in the same cluster:
+$$arg\min\limits_S \sum_{i=1}^k \frac{1}{2|S_i|}\sum_{x,y\in S_i}{||x-y||}^2$$
+The equivalence can be deduced from identity $\sum\limits_{x\in S_i}{x-\mu_i}^2=\sum\limits_{x\neq y\in S_i}(x-\mu_i)(\mu_i-y)$. Because the total variance is constant, this is equivalent to maximizing the sum of squared deviations between points in different clusters(between-cluster sum of squres, BCSS), which follows from the law of total variance.
+
+\subsection{PCA}
+Principal component analysis (PCA) is a statistical procedure that uses an orthogonal transformation to convert a set of observations of possibly correlated variables (entities each of which takes on various numerical values) into a set of values of linearly uncorrelated variables called principal components.\\ 
+If there are n observations with p variables, then the number of distinct principal components is $\min(n-1,p)$. This transformation is defined in such a way that the first principal component has the largest possible variance (that is, accounts for as much of the variability in the data as possible), and each succeeding component in turn has the highest variance possible under the constraint that it is orthogonal to the preceding components. The resulting vectors (each being a linear combination of the variables and containing n observations) are an uncorrelated orthogonal basis set. PCA is sensitive to the relative scaling of the original variables.
+
+
+
+
+
+%----------------------------------------------------------------------------------------
+%	SECTION 4
+%----------------------------------------------------------------------------------------
+
+\section{Algorithm Results}
+\subsection{K-Means}
+Initially, using the original data with standard scaler normalization. Check the optimal k value from 1 to 10.
+\begin{figure}[H]
+\centering
+
+\includegraphics[scale=0.6]{kmeans.png}
+\caption{Visualization of K value}
+\label{fig4.1}
+
+\end{figure}
+From the figure, k=2 is the best value for it gained the biggest decrease in inertia.\\
+\scalebox{0.7}{
+\begin{tabular}{c|c|c|c|c|c|c}
+orig\_label&LAYING&SITTING&STANDING&WALKING&WALKING\_DOWNSTAIRS&WALKING\_UPSTAIRS\\
+clust\_label&&&&&&\\
+0&680&622&668&0&0&6\\
+1&1&1&0&603&493&535
+\end{tabular}}\\
+\\
+Comparing with k=6:\\
+\scalebox{0.7}{
+\begin{tabular}{c|c|c|c|c|c|c}
+orig\_label&LAYING&SITTING&STANDING&WALKING&WALKING\_DOWNSTAIRS&WALKING\_UPSTAIRS\\
+clust\_label&&&&&&\\
+0&554&21&0&0&0&6\\
+1&0&0&0&248&311&97\\
+2&1&0&0&329&107&438\\
+3&20&445&479&0&0&0\\
+4&0&0&0&26&75&4\\
+5&106&157&189&0&0&2
+
+\end{tabular}}\\
+There is no good connections between clusters and original labels for k=6, so it is better to stick with 2 clusters. The two cluster will be 0: not moving; 1: moving.\\
+With these two clusters, k-means separates training data well:\\
+\begin{tabular}{c|c|c}
+orig\_label&0&1\\
+clust\_label&&\\
+0&1970&6\\
+1&2&1631
+\end{tabular}
+\\
+\\
+Evaluation for k=2 clustering:\\
+\begin{tabular}{c|c|c|c|c|c|c}
+inertia&homo&compl&v-meas&ARI&AMI&silhouette\\
+1156484&0.977&0.978&0.978&0.991&0.977&0.390
+\end{tabular}
+
+\subsection{PCA}
+Using Principal Component Analysis, the dataset could be reduced to a smaller size and still contains most of the information.\\
+So far, 2 clusters: moving and not moving seems to be a pattern that represents the feature of dataset. We implement PCA based on this.\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.7]{kmeanspca.png}
+\caption{PCA feature}
+\label{fig4.2}
+\end{figure}
+1 feature is best fit for the algorithm for it achieved biggest decrease on variance.\\
+Using the new data structure of (3609,1) after PCA, the training result becomes:\\
+\begin{tabular}{c|c|c}
+orig\_label&0&1\\
+clust\_label&&\\
+0&1971&8\\
+1&2&1629
+\end{tabular}
+\\
+Evaluation for component=1 PCA:\\
+\begin{tabular}{c|c|c|c|c|c|c}
+inertia&homo&compl&v-meas&ARI&AMI&silhouette\\
+168716&0.976&0.976&0.976&0.990&0.976&0.794
+\end{tabular}
+Inertia and silhouette are much better than original dataset.\\
+Using component=2: Data(3609,2) as comparison:\\
+\begin{tabular}{c|c|c|c|c|c|c}
+inertia&homo&compl&v-meas&ARI&AMI&silhouette\\
+295753&0.975&0.975&0.975&0.990&0.975&0.694
+\end{tabular}\\
+Not better than component=1. So PCA with component=1 gets the best result for 2 cluster K-means.
+%----------------------------------------------------------------------------------------
+%	SECTION 5
+%----------------------------------------------------------------------------------------
+
+\section{Runtime}
+For K-Means, we have k cluster, total of n nodes,distance for each node to a cluster takes d to compute, and t iterations. Thus the time complexity for K-means is $O(k*n*d*t)$.\\
+The dataset (3609,561) with 2 clusters takes 3.67s to train. The time for computing from k=1 to k=10 is 24s.
+
+
+
+%----------------------------------------------------------------------------------------
+%	SECTION 6
+%----------------------------------------------------------------------------------------
+
+%\section{Answers to Definitions}
+
+
+
+%----------------------------------------------------------------------------------------
+%	BIBLIOGRAPHY
+%----------------------------------------------------------------------------------------
+
+%\bibliographystyle{apalike}
+
+%\bibliography{}
+
+%----------------------------------------------------------------------------------------
+
+
+\end{document}
